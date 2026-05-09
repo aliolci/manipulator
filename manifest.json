@@ -9,8 +9,7 @@
     "https://twitter.com/*",
     "https://huggingface.co/*",
     "https://*.huggingface.co/*",
-    "https://cdn-lfs.huggingface.co/*",
-    "https://cdn.jsdelivr.net/*"
+    "https://cdn-lfs.huggingface.co/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js",

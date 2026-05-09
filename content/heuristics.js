@@ -53,7 +53,7 @@ const ENGAGEMENT_BAIT_PHRASES = [
   'loaded with', 'packed with', 'bursting with', 'topped with',
   'fresh flavors', 'fresh flavor', 'every bite', 'every sip',
   'in every', 'perfect for', 'absolute perfection', 'sheer perfection',
-  'so good', 'so satisfying', 'so addicting', 'so addictive',
+  'so good','very satisfying', 'so satisfying', 'so addicting', 'so addictive',
   'oddly satisfying', 'crowd pleaser', 'must try', 'gotta try',
   'goes hard', 'slaps', 'bangs', 'fire 🔥', 'is fire',
   // Narrative-setup hooks ("X was just Y, until Z…")

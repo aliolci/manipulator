@@ -6,10 +6,17 @@
 // Model: Xenova/nli-deberta-v3-xsmall  (~70 MB, ONNX-quantized)
 // Runtime: WebGPU when available, WASM fallback.
 
-import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.5.1/dist/transformers.min.js';
+// Library is vendored locally so we don't rely on remote-hosted code (Chrome
+// Web Store policy disallows remote code execution).
+import { pipeline, env } from '../vendor/transformers/transformers.min.js';
 
 env.allowLocalModels = false;
 env.useBrowserCache = true;
+// Point ONNX runtime at the locally-bundled WASM shards so it doesn't try to
+// fetch them from a CDN at first inference.
+try {
+  env.backends.onnx.wasm.wasmPaths = chrome.runtime.getURL('vendor/transformers/');
+} catch (_) {}
 
 // ── Label sets ──────────────────────────────────────────────────────────────
 // Binary labels in each list — the first is "manipulation-positive", the
