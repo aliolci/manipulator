@@ -1,0 +1,55 @@
+.manipulator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  margin-right: 6px;
+  margin-left: 4px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  cursor: help;
+  user-select: none;
+  background: rgba(0,0,0,0.06);
+  color: #536471;
+  transition: background 0.15s;
+  /* Sit naturally inside the flex row alongside the icon buttons */
+  align-self: center;
+  flex-shrink: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* ≤4 green, (4, 7.5] yellow, >7.5 red */
+.manipulator-badge[data-level="low"]    { background: #e8f5e9; color: #2e7d32; }
+.manipulator-badge[data-level="medium"] { background: #fff8e1; color: #f57f17; }
+.manipulator-badge[data-level="high"]   { background: #ffebee; color: #c62828; }
+.manipulator-badge:hover { filter: brightness(0.95); }
+
+.manipulator-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: #15202b;
+  color: #e7e9ea;
+  padding: 10px 14px;
+  border-radius: 12px;
+  /* Match X's body text font exactly */
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.6;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  max-width: 270px;
+  pointer-events: none;
+  white-space: pre-wrap;
+  letter-spacing: 0;
+}
+
+/* Score line at the top of the tooltip: slightly larger + bold */
+.manipulator-tooltip-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
