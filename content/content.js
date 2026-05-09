@@ -157,9 +157,6 @@
     if (bk && BADGE_ACCOUNT_TYPE[bk]) {
       aboutLines.push(`• Account type: ${BADGE_ACCOUNT_TYPE[bk]}`);
     }
-    if (reputation?.known) {
-      aboutLines.push(`• Known manipulator: yes`);
-    }
     if (reputation && reputation.count >= 1) {
       aboutLines.push(`• History: ${reputation.count} tweets, avg ${reputation.avg.toFixed(1)}/10`);
     }
@@ -395,6 +392,8 @@
 
       const meta = {
         isVideo: tweetData.hasVideo,
+        hasImage: tweetData.hasImage,
+        hasMedia: tweetData.hasMedia,
         isForYou,
         authorHandle: tweetData.authorHandle,
         displayName: tweetData.displayName,
@@ -418,7 +417,7 @@
       void (async () => {
         const reputation = window._manipulator_getHandleReputation
           ? window._manipulator_getHandleReputation(handle)
-          : { score: 0, count: 0, avg: 0, known: false };
+          : { score: 0, count: 0, avg: 0 };
 
         const ml = await classifyTweet({
           handle,

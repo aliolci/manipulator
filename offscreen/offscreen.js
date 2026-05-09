@@ -12,18 +12,26 @@ env.allowLocalModels = false;
 env.useBrowserCache = true;
 
 // ── Label sets ──────────────────────────────────────────────────────────────
-// First label in each list is the "manipulation-positive" hypothesis. We
-// always read its probability as the signal value.
+// Binary labels in each list — the first is "manipulation-positive", the
+// second is "manipulation-negative". With only two labels, zero-shot
+// probabilities sum to 1.0 cleanly and a 0.6 threshold is meaningful.
+//
+// The wording deliberately uses natural English the NLI model has seen
+// during training ("dedicated to a single topic", "regular personal
+// account"). Jargon like "clip-farm" hurts entailment scores.
 const HANDLE_LABELS = [
-  'a themed clip-farm or content-aggregator account',
-  'an authentic personal account',
+  'an account dedicated to a single topic such as animals, nature, food, history, memes, or cars',
+  'a regular personal account run by one individual person',
 ];
-const HANDLE_TEMPLATE = 'This Twitter account is {}.';
+const HANDLE_TEMPLATE = 'This account name describes {}.';
 
+// Text label (positive) covers BOTH literal video narration AND emotional /
+// parasocial captions ("look at those pretty eyes…") — the manipulation
+// pattern is the same: caption written to make the viewer engage with
+// content the poster did not produce.
 const TEXT_LABELS = [
-  'describing what is happening in a video clip',
-  'a personal opinion, reaction, or thought',
-  'sharing news or factual information',
+  'an emotional caption, video narration, or parasocial reaction designed to maximize engagement',
+  'a personal thought, opinion, or piece of factual information from the author',
 ];
 const TEXT_TEMPLATE = 'This tweet is {}.';
 

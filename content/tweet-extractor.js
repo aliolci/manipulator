@@ -293,6 +293,22 @@ function extractTweet(articleEl) {
       }
     } catch (_) {}
 
+    // Has image — photo media attached (separate from video). Image-only
+    // tweets from themed accounts ("No Context Cats" + photo) follow the
+    // same engagement-farming pattern as video clips.
+    let hasImage = false;
+    try {
+      const photoEl = articleEl.querySelector('[data-testid="tweetPhoto"]');
+      if (photoEl && !hasVideo) {
+        // tweetPhoto wraps both photos and video posters; only count it
+        // when there's no video element nearby.
+        if (!photoEl.querySelector('video, [data-testid="videoComponent"]')) {
+          hasImage = true;
+        }
+      }
+    } catch (_) {}
+    const hasMedia = hasVideo || hasImage;
+
     // Location: try explicit place links X attaches, fall back to lang attr
     let location = null;
     try {
@@ -337,6 +353,8 @@ function extractTweet(articleEl) {
       authorHandle,
       displayName,
       hasVideo,
+      hasImage,
+      hasMedia,
       location,
       viewCount,
       verificationBadgeKind,

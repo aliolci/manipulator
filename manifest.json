@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Manipulator",
-  "version": "0.1.0",
+  "version": "0.1.296",
   "description": "See the attention-extraction score of every tweet in your For You feed.",
   "permissions": ["storage", "offscreen"],
   "host_permissions": [

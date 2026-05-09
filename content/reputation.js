@@ -21,39 +21,6 @@ const MIN_SAMPLES = 2;            // need ≥2 tweets before reputation kicks in
 const FULL_CONFIDENCE_AT = 10;    // confidence reaches 1.0 at this many samples
 const BENIGN_THRESHOLD = 3;       // avg score ≤3 = benign account (no bonus)
 
-// ── Curated list of known manipulator/clip-farm handles ─────────────────────
-// Lowercased. Matched on `authorHandle.toLowerCase()`. Hits return rep = 1.0
-// regardless of sample count, so they're penalised on the first tweet seen.
-const KNOWN_MANIPULATORS = new Set([
-  'historyinmemes',
-  'awkwardgoogle',
-  'cinema_vault7',
-  'cinemavault',
-  'onlybangerseth',
-  'onlybangers',
-  'realbigbrainai',
-  'humanitych',                   // "Restoring Your Faith in Humanity"
-  'humanitychannel',
-  'yoda4ever',
-  'rainmaker1973',                // Massimo — confirmed clip-farm offender
-  'historicvids',
-  'fascinatingpics',
-  'amazingmaps',
-  'historyphotos',
-  'unusualfacts',
-  'wholesomememe',
-  'feelgoodvideos',
-  'nichulscher',
-  'snackreel',                    // food/recipe clip farm
-  'defenceinstinct',              // "Cinematic Reels" video farm
-  'dwanpiece',                    // emoji-only clip account
-]);
-
-function isKnownManipulator(handle) {
-  if (!handle) return false;
-  return KNOWN_MANIPULATORS.has(handle.toLowerCase());
-}
-
 // ── Load / persist ──────────────────────────────────────────────────────────
 
 async function loadReputation() {
@@ -84,21 +51,11 @@ function _scheduleWrite() {
 // ── Public API ──────────────────────────────────────────────────────────────
 
 function getHandleReputation(handle) {
-  if (!handle) return { score: 0, count: 0, avg: 0, known: false };
-  const known = isKnownManipulator(handle);
+  if (!handle) return { score: 0, count: 0, avg: 0 };
   const stats = _repCache.get(handle);
 
-  if (known) {
-    return {
-      score: 1.0,
-      count: stats?.count || 0,
-      avg: stats?.avg || 0,
-      known: true,
-    };
-  }
-
   if (!stats || stats.count < MIN_SAMPLES) {
-    return { score: 0, count: stats?.count || 0, avg: stats?.avg || 0, known: false };
+    return { score: 0, count: stats?.count || 0, avg: stats?.avg || 0 };
   }
 
   const confidence = Math.min(stats.count / FULL_CONFIDENCE_AT, 1);
@@ -107,7 +64,6 @@ function getHandleReputation(handle) {
     score: confidence * badness,
     count: stats.count,
     avg: stats.avg,
-    known: false,
   };
 }
 
@@ -129,4 +85,3 @@ loadReputation();
 // Expose for other scripts (loaded after this one).
 window._manipulator_getHandleReputation = getHandleReputation;
 window._manipulator_recordScore = recordScore;
-window._manipulator_isKnownManipulator = isKnownManipulator;

@@ -205,6 +205,14 @@ const THEMATIC_HANDLE_WORDS = [
   'epic', 'legend', 'legendary', 'iconic',
   // Cute / animal bait
   'cute', 'cutest', 'adorable', 'pet', 'pets', 'doggos', 'puppy', 'kitten',
+  'cat', 'cats', 'kitty', 'kitties', 'kittens', 'feline', 'felines',
+  'dog', 'dogs', 'doggo', 'pupper', 'puppers', 'pup', 'pups', 'canine',
+  'nocontext', 'no context',
+  // Nature / wildlife / animal-content farms
+  'nature', 'natural', 'wildlife', 'wild', 'animal', 'animals',
+  'creature', 'critter', 'beast', 'fauna',
+  'phenomenal', 'phenomena', 'wonders', 'wonder',
+  'planet', 'earth', 'geo', 'biosphere', 'wildearth',
   // News-bait farms
   'breaking', 'updates', 'now', 'world', 'global', 'alert', 'watch',
 ];
@@ -299,11 +307,13 @@ function computeHeuristics(tweetText, tweetMeta) {
 
   const thematicHandle = detectThematicHandle(tweetMeta.authorHandle, tweetMeta.displayName);
 
-  // Pure clip bait: video posted with no informative text (emoji-only,
-  // single word, "👇", etc.). This is the clearest "I'm just farming views
-  // off this clip" pattern there is.
+  // Pure clip bait: media (video OR photo) posted with no informative text
+  // (emoji-only, single word, "👇", etc.). This is the clearest "I'm just
+  // farming views off this content" pattern there is — applies equally to
+  // a photo of a cat with caption "so polite" as to a video clip + emojis.
+  const hasMedia = !!(tweetMeta.hasMedia ?? (tweetMeta.isVideo || tweetMeta.hasImage));
   let pureClipBait = 0;
-  if (tweetMeta.isVideo) {
+  if (hasMedia) {
     // Strip emojis, whitespace, and punctuation; count remaining real chars.
     let stripped;
     try {
@@ -316,7 +326,7 @@ function computeHeuristics(tweetText, tweetMeta) {
     const real = stripped.length;
     if (real === 0) pureClipBait = 1;          // pure emoji / empty
     else if (real <= 6) pureClipBait = 0.95;   // 1 short word + emojis
-    else if (real <= 14) pureClipBait = 0.85;  // ≤14 real chars ("A real coach.")
+    else if (real <= 14) pureClipBait = 0.85;  // ≤14 real chars ("so polite")
     else if (real <= 22) pureClipBait = 0.6;   // ≤22 real chars ("Pose IRL")
     else if (real <= 30) pureClipBait = 0.35;  // ≤30 real chars (still thin)
   }
@@ -336,6 +346,7 @@ function computeHeuristics(tweetText, tweetMeta) {
     cliffhanger,
     clickBait,
     isVideo: tweetMeta.isVideo ? 1 : 0,
+    hasMedia: hasMedia ? 1 : 0,
     videoNarration,
     pureClipBait,
     thematicHandle,

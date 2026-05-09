@@ -1,7 +1,7 @@
 const SCORE_WEIGHTS = {
   pureClipBait: 0.86,          // video + emoji-only / no real text
   clickBait: 0.13,
-  videoNarration: 0.21,
+  videoNarration: 0.17,
   manipulatorRep: 0.16,        // per-handle history of manipulative posts
   thematicHandle: 0.3,
   viralReach: 0.09,            // view count >= 50K
@@ -80,23 +80,24 @@ function combineScore({ heuristics, reputation, verificationBadgeKind, ml }) {
   // Map raw [0,1] → score [0,10] with a single decimal digit.
   let score = roundScore1(raw * 10);
 
-  // Floor: any video with minimal text (pure emoji, video-only, or just a
-  // few words) is a clip-farming pattern and must score at least 6.
-  // pureClipBait ≥ 0.5 corresponds to ≤22 real characters after stripping
-  // emoji/punctuation, which is "a few words" or less.
+  // Floor: any media post (video OR photo) with minimal text (pure emoji,
+  // single word, or just a few words) is a clip/photo-farming pattern and
+  // must score at least 6. Captures "so polite" + cat photo just as well
+  // as "Royal family.." + video.
+  const hasMedia = !!heuristics.hasMedia;
   let flooredBy = null;
-  if (heuristics.isVideo && heuristics.pureClipBait >= 0.5 && score < 6) {
+  if (hasMedia && heuristics.pureClipBait >= 0.5 && score < 6) {
     score = 6;
-    flooredBy = 'minimal-text video';
+    flooredBy = 'minimal-text media';
   }
 
   // Themed-clip boost: when ML says BOTH the handle is a themed clip-farm
-  // brand AND the text is describing video content, AND there's a video
-  // attached → add +5 points. Captures patterns like
-  //   "Cats with Aura" + "the way she immediately displays..." + video.
+  // brand AND the text is engagement-bait, AND there's media attached
+  // → add +5 points. Captures both "Cats with Aura" + video narration AND
+  // "No Context Cats" + cat photo + "so polite" patterns.
   let themedClipBoost = 0;
   if (
-    heuristics.isVideo &&
+    hasMedia &&
     mlThemedHandle >= THEMED_CLIP_BOOST_THRESHOLD &&
     mlVideoNarration >= THEMED_CLIP_BOOST_THRESHOLD
   ) {
