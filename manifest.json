@@ -10,7 +10,8 @@
     "https://huggingface.co/*",
     "https://*.huggingface.co/*",
     "https://cdn-lfs.huggingface.co/*",
-    "https://cdn.jsdelivr.net/*"
+    "https://cdn.jsdelivr.net/*",
+    "https://www.google-analytics.com/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js",
@@ -26,6 +27,7 @@
     {
       "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": [
+        "content/analytics.js",
         "content/heuristics.js",
         "content/income.js",
         "content/profile-location.js",
@@ -42,5 +44,20 @@
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
-  }
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Manipulator settings",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["PRIVACY.md", "PERMISSIONS.md"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
