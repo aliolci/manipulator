@@ -13,28 +13,6 @@
   let isForYou = false;
   let tooltipEl = null;
 
-  // ── Analytics helpers ────────────────────────────────────────────────────
-
-  /** Bucket a 0–10 score into a small category for analytics aggregation. */
-  function scoreBucket(score) {
-    const s = Number(score) || 0;
-    if (s <= 2) return 'very_low';
-    if (s <= 4) return 'low';
-    if (s <= 6) return 'medium';
-    if (s <= 8) return 'high';
-    return 'very_high';
-  }
-
-  /** Count how many score signals contributed at least 0.1pt. */
-  function countFiredSignals(contributions) {
-    if (!contributions) return 0;
-    let n = 0;
-    for (const v of Object.values(contributions)) {
-      if (typeof v === 'number' && Math.abs(v) >= 0.1) n++;
-    }
-    return n;
-  }
-
   // ── Tooltip ──────────────────────────────────────────────────────────────
 
   function getTooltip() {
@@ -221,14 +199,7 @@
   // asynchronously (e.g. after profile location fetch) without replacing listeners.
   function attachTooltip(badge) {
     badge.addEventListener('mouseenter', () => {
-      if (badge._tip) {
-        showTooltip(badge, badge._tip);
-        if (window._manipulator_track) {
-          window._manipulator_track('tooltip_opened', {
-            score_bucket: scoreBucket(parseFloat(badge.textContent) || 0),
-          });
-        }
-      }
+      if (badge._tip) showTooltip(badge, badge._tip);
     });
     badge.addEventListener('mouseleave', hideTooltip);
     badge.addEventListener('mousemove', () => positionTooltip(badge));
@@ -448,13 +419,11 @@
           ? window._manipulator_getHandleReputation(handle)
           : { score: 0, count: 0, avg: 0 };
 
-        const mlStart = performance.now();
         const ml = await classifyTweet({
           handle,
           displayName: tweetData.displayName,
           text: tweetData.text,
         });
-        const mlLatencyMs = Math.round(performance.now() - mlStart);
 
         const { score, breakdown, contributions, flooredBy } = combineScore({
           heuristics,
@@ -466,22 +435,6 @@
 
         if (handle && window._manipulator_recordScore) {
           window._manipulator_recordScore(handle, score);
-        }
-
-        // Analytics — category-level only, no tweet content / handles.
-        if (window._manipulator_track) {
-          window._manipulator_track('tweet_scored', {
-            score_bucket: scoreBucket(score),
-            has_video: !!heuristics.isVideo,
-            has_media: !!heuristics.hasMedia,
-            is_for_you: !!heuristics.isForYou,
-            score_floored: !!flooredBy,
-            themed_clip_boost: contributions?.themedClipBoost ? 1 : 0,
-            verification_deduction: contributions?.verificationDeduction ? 1 : 0,
-            ml_latency_ms: mlLatencyMs,
-            // Bucketed counts of which signals fired (above 0.05pt) — no values
-            signals_fired: countFiredSignals(contributions),
-          });
         }
 
         // Cache so future re-renders of this tweet can re-inject without recomputing.
@@ -549,14 +502,6 @@
     isForYou = detectForYou();
     startObserver();
     watchTabChanges();
-
-    // One init event per page load — useful for "active sessions" + funnel.
-    if (window._manipulator_track) {
-      window._manipulator_track('extension_init', {
-        is_for_you: !!isForYou,
-        path: location.pathname.slice(0, 40),
-      });
-    }
   }
 
   if (document.readyState === 'loading') {
