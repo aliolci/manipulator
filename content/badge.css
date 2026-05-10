@@ -31,7 +31,7 @@
   z-index: 9999;
   background: #15202b;
   color: #e7e9ea;
-  padding: 10px 14px;
+  padding: 10px;
   border-radius: 12px;
   /* Match X's body text font exactly */
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -52,4 +52,9 @@
   margin-bottom: 6px;
   display: block;
   color: #ffffff;
+}
+
+/* Subsection headings: Driven by, About @…, This Post */
+.manipulator-tooltip-section-title {
+  font-weight: 500;
 }

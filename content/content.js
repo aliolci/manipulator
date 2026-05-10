@@ -27,16 +27,34 @@
 
   function showTooltip(badge, content) {
     const tip = getTooltip();
-    // Render first line (score) as a bold title, rest as body text
     const lines = content.split('\n');
     tip.innerHTML = '';
+
     const title = document.createElement('span');
     title.className = 'manipulator-tooltip-title';
     title.textContent = lines[0];
     tip.appendChild(title);
+
+    function isSectionTitle(line) {
+      if (line === 'Driven by:' || line === 'This Post:') return true;
+      return /^About @.+:$/.test(line);
+    }
+
     if (lines.length > 1) {
-      const body = document.createTextNode(lines.slice(1).join('\n'));
-      tip.appendChild(body);
+      const fragment = document.createDocumentFragment();
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (i > 1) fragment.appendChild(document.createTextNode('\n'));
+        if (isSectionTitle(line)) {
+          const span = document.createElement('span');
+          span.className = 'manipulator-tooltip-section-title';
+          span.textContent = line;
+          fragment.appendChild(span);
+        } else {
+          fragment.appendChild(document.createTextNode(line));
+        }
+      }
+      tip.appendChild(fragment);
     }
     tip.style.display = 'block';
     positionTooltip(badge);

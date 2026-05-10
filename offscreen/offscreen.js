@@ -17,6 +17,21 @@ env.useBrowserCache = true;
 try {
   env.backends.onnx.wasm.wasmPaths = chrome.runtime.getURL('vendor/transformers/');
 } catch (_) {}
+// Suppress ORT's WARN-level chatter (e.g. "VerifyEachNodeIsAssignedToAnEp")
+// so users don't see harmless noise in the extension's error log. Real
+// errors still surface. ORT exposes log level via two slightly different
+// paths depending on the build, so set both defensively.
+//   String form ("verbose"|"info"|"warning"|"error"|"fatal") is what
+//   onnxruntime-web's env expects. Numeric form (0..4) is the per-session
+//   option name.
+try {
+  if (env.backends.onnx?.env) {
+    env.backends.onnx.env.logLevel = 'error';
+  }
+} catch (_) {}
+try {
+  env.backends.onnx.logSeverityLevel = 3;
+} catch (_) {}
 
 // ── Label sets ──────────────────────────────────────────────────────────────
 // Binary labels in each list — the first is "manipulation-positive", the
@@ -43,15 +58,21 @@ const TEXT_LABELS = [
 const TEXT_TEMPLATE = 'This tweet is {}.';
 
 // ── Model loading ───────────────────────────────────────────────────────────
+// `session_options.logSeverityLevel: 3` silences the C++ ORT warnings on a
+// per-session basis (the global env.logLevel above doesn't always cover the
+// VerifyEachNodeIsAssignedToAnEp message because it's emitted during
+// session creation before global env settings are read).
+const SESSION_OPTIONS = { logSeverityLevel: 3 };
+
 const classifierPromise = pipeline(
   'zero-shot-classification',
   'Xenova/nli-deberta-v3-xsmall',
-  { device: 'webgpu', dtype: 'q8' }
+  { device: 'webgpu', dtype: 'q8', session_options: SESSION_OPTIONS }
 ).catch(() =>
   pipeline(
     'zero-shot-classification',
     'Xenova/nli-deberta-v3-xsmall',
-    { device: 'wasm', dtype: 'q8' }
+    { device: 'wasm', dtype: 'q8', session_options: SESSION_OPTIONS }
   )
 );
 
