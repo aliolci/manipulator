@@ -152,6 +152,11 @@
     if (contributions?.verificationDeduction) {
       rows.push(['verificationDeduction', badgeDeductionLabel]);
     }
+    if (contributions?.accountAgeDeduction) {
+      const yrs = breakdown?.accountAgeYears;
+      const label = (yrs != null) ? `${Math.floor(yrs)}y` : 'long-lived account';
+      rows.push(['accountAgeDeduction', label]);
+    }
     const rowsFiltered = rows
       .filter(([k]) => Math.abs(contributions?.[k] || 0) >= 0.05)
       .sort(
@@ -234,11 +239,13 @@
 
   function injectBadge(tweetRootEl) {
     const badge = document.createElement('span');
-    badge.className = 'manipulator-badge';
+    badge.className = 'manipulator-badge manipulator-badge--loading';
     badge.setAttribute('data-level', 'low');
     badge.setAttribute('role', 'status');
     badge.setAttribute('aria-label', 'Attention pressure score: loading');
-    badge.textContent = '…';
+    // Animated dots come from CSS (::after content keyframes). Leave the
+    // element empty so the pseudo-element is the only visible content.
+    badge.textContent = '';
     attachTooltip(badge);
 
     try {
@@ -315,6 +322,7 @@
   function updateBadge(badge, score, breakdown, contributions, income, aboutInfo, handle, reputation) {
     if (!badge) return;
     const country = aboutInfo?.accountBasedIn ? extractCountryFromText(aboutInfo.accountBasedIn) : null;
+    badge.classList.remove('manipulator-badge--loading');
     badge.setAttribute('data-level', levelFor(score));
     badge.setAttribute('aria-label', `Attention pressure score: ${formatScore1(score)} out of 10`);
     badge.textContent = badgeLabel(score, country?.flag);
@@ -443,13 +451,26 @@
           text: tweetData.text,
         });
 
-        const { score, breakdown, contributions, flooredBy } = combineScore({
-          heuristics,
-          reputation,
-          verificationBadgeKind: tweetData.verificationBadgeKind,
-          ml,
-        });
-        breakdown.flooredBy = flooredBy;
+        // If we already have About data cached for this handle, fold it into
+        // the initial scoring so the age deduction applies immediately.
+        const handleKey = handle ? handle.toLowerCase() : '';
+        const cachedInfo = handleKey && window._profileCache.has(handleKey)
+          ? window._profileCache.get(handleKey)
+          : null;
+
+        const scoreWith = (aboutInfo) => {
+          const out = combineScore({
+            heuristics,
+            reputation,
+            verificationBadgeKind: tweetData.verificationBadgeKind,
+            ml,
+            aboutInfo,
+          });
+          out.breakdown.flooredBy = out.flooredBy;
+          return out;
+        };
+
+        let { score, breakdown, contributions } = scoreWith(cachedInfo);
 
         if (handle && window._manipulator_recordScore) {
           window._manipulator_recordScore(handle, score);
@@ -460,17 +481,21 @@
           score, breakdown, contributions, income, handle, reputation,
         });
 
-        const handleKey = handle ? handle.toLowerCase() : '';
-        const cachedInfo = handleKey && window._profileCache.has(handleKey)
-          ? window._profileCache.get(handleKey)
-          : null;
         updateBadge(badge, score, breakdown, contributions, income, cachedInfo, handle, reputation);
 
         if (handleKey && !window._profileCache.has(handleKey)) {
           getProfileLocation(handle).then(aboutInfo => {
-            if (badge.isConnected) {
-              updateBadge(badge, score, breakdown, contributions, income, aboutInfo, handle, reputation);
-            }
+            if (!badge.isConnected) return;
+            // Re-score with the now-known account age, then refresh the badge
+            // + cache. Reputation isn't re-recorded — we already booked it.
+            const refreshed = scoreWith(aboutInfo);
+            score = refreshed.score;
+            breakdown = refreshed.breakdown;
+            contributions = refreshed.contributions;
+            scoreCache.set(tweetId, {
+              score, breakdown, contributions, income, handle, reputation,
+            });
+            updateBadge(badge, score, breakdown, contributions, income, aboutInfo, handle, reputation);
           });
         }
       })();

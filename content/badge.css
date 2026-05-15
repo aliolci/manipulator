@@ -26,6 +26,22 @@
 .manipulator-badge[data-level="high"]   { background: #ffebee; color: #c62828; }
 .manipulator-badge:hover { filter: brightness(0.95); }
 
+/* Loading state — cycle "." "‧‧" "‧‧‧" until score arrives.
+   `width: 1.5ch` keeps the badge from jittering as dot count changes. */
+.manipulator-badge--loading::after {
+  content: '';
+  display: inline-block;
+  width: 1.5ch;
+  text-align: left;
+  animation: manipulator-badge-dots 1.2s infinite steps(1);
+}
+@keyframes manipulator-badge-dots {
+  0%   { content: '.'; }
+  33%  { content: '..'; }
+  66%  { content: '...'; }
+  100% { content: '.'; }
+}
+
 .manipulator-tooltip {
   position: fixed;
   z-index: 9999;

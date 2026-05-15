@@ -30,6 +30,7 @@ const SCORE_LABELS = {
   mlVideoNarration: 'Video narration (ML)',
   themedClipBoost: 'Themed-clip boost',
   verificationDeduction: 'Trust',
+  accountAgeDeduction: 'Account age',
 };
 
 /** Bonus when ML detects BOTH a themed handle AND video-describing text on a video tweet. */
@@ -39,12 +40,23 @@ const THEMED_CLIP_BOOST_POINTS = 5;
 /** Subtract from final score when poster has X gold (org) or grey (gov) check — not blue. */
 const VERIFICATION_BADGE_SCORE_DEDUCTION = 5;
 
+/** −1 point for every N years the X account has existed (long-lived accounts ≈ less manipulative). */
+const ACCOUNT_AGE_DEDUCTION_PER_N_YEARS = 7;
+const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000;
+
+/** Parse a "March 2020"-style string back to a Date (returns null if unparseable). */
+function _parseJoinDate(str) {
+  if (!str || typeof str !== 'string') return null;
+  const d = new Date(str);
+  return Number.isFinite(d.getTime()) ? d : null;
+}
+
 /** One decimal place on the 0–10 scale (avoids float dust). */
 function roundScore1(x) {
   return Math.round(Number(x) * 10) / 10;
 }
 
-function combineScore({ heuristics, reputation, verificationBadgeKind, ml }) {
+function combineScore({ heuristics, reputation, verificationBadgeKind, ml, aboutInfo }) {
   const hasGoldOrGreyCheckmark =
     verificationBadgeKind === 'gold' || verificationBadgeKind === 'grey';
   const manipulatorRep = reputation?.score || 0;
@@ -115,6 +127,26 @@ function combineScore({ heuristics, reputation, verificationBadgeKind, ml }) {
     contributions.verificationDeduction = -verificationDeductionPoints;
   }
 
+  // Long-lived accounts skew toward less manipulative. −1 point for every
+  // ACCOUNT_AGE_DEDUCTION_PER_N_YEARS the account has existed.
+  // Joined March 2020 → ~6y → 0 deduction
+  // Joined Jan 2015   → ~11y → −1 deduction
+  // Joined Mar 2008   → ~18y → −2 deduction
+  let accountAgeYears = null;
+  let accountAgeDeductionPoints = 0;
+  const joinDate = _parseJoinDate(aboutInfo?.dateJoined);
+  if (joinDate) {
+    accountAgeYears = (Date.now() - joinDate.getTime()) / MS_PER_YEAR;
+    accountAgeDeductionPoints = Math.max(
+      0,
+      Math.floor(accountAgeYears / ACCOUNT_AGE_DEDUCTION_PER_N_YEARS)
+    );
+    if (accountAgeDeductionPoints > 0) {
+      score = roundScore1(Math.max(0, score - accountAgeDeductionPoints));
+      contributions.accountAgeDeduction = -accountAgeDeductionPoints;
+    }
+  }
+
   score = roundScore1(Math.max(0, score));
   if (score < 1) score = 0;
 
@@ -125,6 +157,8 @@ function combineScore({ heuristics, reputation, verificationBadgeKind, ml }) {
       verificationDeductionPoints,
       verificationBadgeKind,
       themedClipBoost,
+      accountAgeYears,
+      accountAgeDeductionPoints,
     },
     contributions,
     flooredBy,
