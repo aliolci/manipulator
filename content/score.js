@@ -10,8 +10,9 @@ const SCORE_WEIGHTS = {
   emotionalPunctuation: 0.04,
   cliffhanger: 0.03,
   isForYou: 0.03,
-  mlThemedHandle: 0.10,        // ML zero-shot: account is a themed clip-farm
+  mlThemedHandle: 0.3,        // ML zero-shot: account is a themed clip-farm
   mlVideoNarration: 0.10,      // ML zero-shot: text describes video content
+  age: 0.3,                    // account age
 };
 
 const SCORE_LABELS = {
@@ -140,7 +141,7 @@ function combineScore({ heuristics, reputation, verificationBadgeKind, ml, about
     accountAgeDeductionPoints = Math.max(
       0,
       Math.floor(accountAgeYears / ACCOUNT_AGE_DEDUCTION_PER_N_YEARS)
-    );
+    ) * SCORE_WEIGHTS.age;
     if (accountAgeDeductionPoints > 0) {
       score = roundScore1(Math.max(0, score - accountAgeDeductionPoints));
       contributions.accountAgeDeduction = -accountAgeDeductionPoints;
