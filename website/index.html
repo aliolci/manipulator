@@ -3,20 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manipulator — See through the algorithm</title>
-  <meta name="description" content="AI-powered Chrome extension that scores every tweet 0–10 for engagement bait. Spot clickbait, clip farms, and themed accounts at a glance.">
+  <title>Manipulator — Chrome Extension to Score X Tweets for Manipulation</title>
+  <meta name="description" content="Free Chrome extension for X (Twitter). Scores every tweet 0–10 for clickbait, clip farms, and engagement bait using on-device AI. No account, no tracking.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Manipulator">
+  <meta name="theme-color" content="#dc4e36">
+  <link rel="canonical" href="https://aliolci.github.io/manipulator/">
   <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Manipulator">
+  <meta property="og:title" content="Manipulator — See through the algorithm on X">
+  <meta property="og:description" content="Score every tweet 0–10 for manipulation patterns. Local AI, real-time badges, zero tracking.">
+  <meta property="og:url" content="https://aliolci.github.io/manipulator/">
+  <meta property="og:image" content="https://aliolci.github.io/manipulator/screenshots/hero.png">
+  <meta property="og:image:width" content="1000">
+  <meta property="og:image:height" content="400">
+  <meta property="og:image:alt" content="Manipulator manipulation score badges on the X timeline">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Manipulator — Chrome extension for X feed scores">
+  <meta name="twitter:description" content="Spot clickbait, clip farms, and themed accounts at a glance. On-device AI for X (Twitter).">
+  <meta name="twitter:image" content="https://aliolci.github.io/manipulator/screenshots/hero.png">
+  <meta name="twitter:image:alt" content="Manipulator manipulation score badges on the X timeline">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://aliolci.github.io/manipulator/#website",
+        "url": "https://aliolci.github.io/manipulator/",
+        "name": "Manipulator",
+        "description": "Chrome extension that scores X (Twitter) tweets for manipulation and engagement bait.",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://aliolci.github.io/manipulator/#app",
+        "name": "Manipulator",
+        "url": "https://aliolci.github.io/manipulator/",
+        "image": "https://aliolci.github.io/manipulator/screenshots/hero.png",
+        "description": "Scores every tweet 0–10 for clickbait, clip farms, and themed accounts on X using local AI in your browser.",
+        "applicationCategory": "BrowserApplication",
+        "applicationSubCategory": "Chrome Extension",
+        "operatingSystem": "Chrome",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Real-time manipulation scores on X timeline",
+          "On-device zero-shot AI classification",
+          "No analytics or telemetry",
+          "Hover tooltip with signal breakdown"
+        ],
+        "isPartOf": { "@id": "https://aliolci.github.io/manipulator/#website" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ─── Nav ───────────────────────────────────────────────────────── -->
   <header class="nav">
-    <a href="#" class="nav__brand">
-      <img src="icon.png" alt="" width="32" height="32">
+    <nav class="nav__inner" aria-label="Primary">
+    <a href="./" class="nav__brand">
+      <img src="icon.png" alt="Manipulator" width="32" height="32">
       <span>Manipulator</span>
     </a>
     <a href="#install" class="btn btn--primary btn--small">
@@ -26,16 +85,17 @@
       </svg>
       Add to Chrome
     </a>
+    </nav>
   </header>
 
-  <!-- ─── Hero ──────────────────────────────────────────────────────── -->
-  <section class="hero">
+  <main id="main">
+  <section class="hero" aria-labelledby="hero-heading">
     <div class="hero__inner">
       <div class="hero__copy">
         <span class="eyebrow">
           <span class="dot"></span> AI inside your browser
         </span>
-        <h1>See through the algorithm.</h1>
+        <h1 id="hero-heading">See through the algorithm.</h1>
         <p class="lead">
           Manipulator scores every tweet <strong>0–10</strong> for engagement
           bait — clickbait, clip farms, themed accounts. Powered by a local
@@ -61,14 +121,15 @@
 
       <div class="hero__visual">
         <div class="screenshot screenshot--hero">
-          <img src="screenshots/hero.png" alt="Manipulator badges in the X timeline" width="1000" height="400">
+          <img src="screenshots/hero.png" alt="Manipulator badges in the X timeline" width="1000" height="400" fetchpriority="high" decoding="async">
         </div>
       </div>
     </div>
   </section>
 
   <!-- ─── Three pillars ─────────────────────────────────────────────── -->
-  <section class="pillars">
+  <section class="pillars" aria-labelledby="pillars-heading">
+    <h2 id="pillars-heading" class="visually-hidden">Why Manipulator</h2>
     <div class="container">
       <div class="pillar">
         <div class="pillar__icon" aria-hidden="true">
@@ -105,9 +166,9 @@
   </section>
 
   <!-- ─── How it works ──────────────────────────────────────────────── -->
-  <section class="how" id="how">
+  <section class="how" id="how" aria-labelledby="how-heading">
     <div class="container">
-      <h2>How it works</h2>
+      <h2 id="how-heading">How it works</h2>
       <p class="section-lead">
         Three steps. No setup. The AI does the rest.
       </p>
@@ -120,7 +181,7 @@
             <p>Add Manipulator from the Chrome Web Store. No account, no signup, no settings to configure.</p>
           </div>
           <div class="screenshot screenshot--step">
-            <img src="screenshots/step-install.png" alt="Chrome Web Store install page for Manipulator" width="960" height="600">
+            <img src="screenshots/step-install.png" alt="Chrome Web Store install page for Manipulator" width="960" height="600" loading="lazy" decoding="async">
           </div>
         </li>
 
@@ -131,7 +192,7 @@
             <p>The AI scores every tweet as it scrolls into view. A small badge appears inline next to the timestamp.</p>
           </div>
           <div class="screenshot screenshot--step">
-            <img src="screenshots/step-badge.gif" alt="Manipulator score badge on a tweet in the X timeline" width="960" height="600">
+            <img src="screenshots/step-badge.gif" alt="Manipulator score badge on a tweet in the X timeline" width="960" height="600" loading="lazy" decoding="async">
           </div>
         </li>
 
@@ -142,7 +203,7 @@
             <p>The tooltip shows which signals fired, the poster's identity, country flag, and how their past tweets have scored over time.</p>
           </div>
           <div class="screenshot screenshot--step">
-            <img src="screenshots/step-tooltip.png" alt="Manipulator tooltip showing score breakdown on hover" width="960" height="600">
+            <img src="screenshots/step-tooltip.png" alt="Manipulator tooltip showing score breakdown on hover" width="960" height="600" loading="lazy" decoding="async">
           </div>
         </li>
       </ol>
@@ -150,13 +211,13 @@
   </section>
 
   <!-- ─── AI emphasis ───────────────────────────────────────────────── -->
-  <section class="ai">
+  <section class="ai" aria-labelledby="ai-heading">
     <div class="container ai__grid">
       <div class="ai__copy">
         <span class="eyebrow eyebrow--light">
           <span class="dot dot--light"></span> Powered by on-device AI
         </span>
-        <h2>The model runs inside your browser.</h2>
+        <h2 id="ai-heading">The model runs inside your browser.</h2>
         <p>
           Manipulator ships with a quantized zero-shot classifier — the same
           kind of model that powers modern text understanding, just shrunk
@@ -177,29 +238,29 @@
       </div>
 
       <div class="screenshot screenshot--ai">
-        <img src="screenshots/ai-breakdown.png" alt="Manipulator tooltip showing AI classification signals" width="960" height="440">
+        <img src="screenshots/ai-breakdown.png" alt="Manipulator tooltip showing AI classification signals" width="960" height="440" loading="lazy" decoding="async">
       </div>
     </div>
   </section>
 
   <!-- ─── Big screenshot ────────────────────────────────────────────── -->
-  <section class="showcase">
+  <section class="showcase" aria-labelledby="showcase-heading">
     <div class="container">
-      <h2>One badge. Every tweet.</h2>
+      <h2 id="showcase-heading">One badge. Every tweet.</h2>
       <p class="section-lead">
         The score is just a number. Hover to see exactly why it landed there.
       </p>
 
       <div class="screenshot screenshot--showcase">
-        <img src="screenshots/showcase.png" alt="High-scoring tweet with Manipulator tooltip expanded" width="1760" height="560">
+        <img src="screenshots/showcase.png" alt="High-scoring tweet with Manipulator tooltip expanded" width="1760" height="560" loading="lazy" decoding="async">
       </div>
     </div>
   </section>
 
   <!-- ─── Privacy ───────────────────────────────────────────────────── -->
-  <section class="privacy" id="privacy">
+  <section class="privacy" id="privacy" aria-labelledby="privacy-heading">
     <div class="container">
-      <h2>Built for trust, not for data.</h2>
+      <h2 id="privacy-heading">Built for trust, not for data.</h2>
       <div class="privacy__grid">
         <div class="privacy__row">
           <span class="check" aria-hidden="true">
@@ -236,32 +297,33 @@
   </section>
 
   <!-- ─── Final CTA ─────────────────────────────────────────────────── -->
-  <section class="cta" id="install">
+  <section class="cta" id="install" aria-labelledby="install-heading">
     <div class="container">
-      <h2>Stop scrolling on autopilot.</h2>
+      <h2 id="install-heading">Stop scrolling on autopilot.</h2>
       <p class="section-lead">Install Manipulator and see the engineering behind your feed.</p>
-      <a href="#" class="btn btn--primary btn--large">
+      <a href="https://chromewebstore.google.com/" class="btn btn--primary btn--large" rel="noopener noreferrer">
         <!-- bi-browser-chrome -->
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
           <path fill-rule="evenodd" d="M16 8a8.001 8.001 0 0 1-7.022 7.94l1.902-7.098a2.995 2.995 0 0 0 .05-1.492A2.977 2.977 0 0 0 10.237 6h5.511A8 8 0 0 1 16 8M0 8a8 8 0 0 0 7.927 8l1.426-5.321a2.978 2.978 0 0 1-.723.255 2.979 2.979 0 0 1-1.743-.187A2.986 2.986 0 0 1 5.27 9.4L2.487 4.582A7.987 7.987 0 0 0 0 8m5.5 0a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0M8 0a7.998 7.998 0 0 1 6.929 4H8a3.003 3.003 0 0 0-2.96 2.5h-.04l-.045-.083L2.387 1.84A7.978 7.978 0 0 1 8 0"/>
         </svg>
         Add to Chrome
       </a>
-      <p class="muted small">Free · Open source · No account required</p>
+      <p class="muted small">Free · Open scoring · No account required</p>
     </div>
   </section>
+  </main>
 
   <footer class="footer">
     <div class="container">
       <div class="footer__brand">
-        <img src="icon.png" alt="" width="32" height="32">
+        <img src="icon.png" alt="Manipulator" width="32" height="32">
         <span>Manipulator</span>
       </div>
-      <div class="footer__links">
+      <nav class="footer__links" aria-label="Footer">
         <a href="#privacy">Privacy</a>
-        <a href="#">Chrome Web Store</a>
-        <a href="#">Source</a>
-      </div>
+        <a href="https://chromewebstore.google.com/" rel="noopener noreferrer">Chrome Web Store</a>
+        <a href="https://github.com/aliolci/manipulator" rel="noopener noreferrer">Source</a>
+      </nav>
     </div>
   </footer>
 
