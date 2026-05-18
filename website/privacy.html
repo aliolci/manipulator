@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Manipulator</title>
+  <meta name="description" content="Manipulator runs entirely in your browser. No analytics, no telemetry, no tracking.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#dc4e36">
+  <link rel="canonical" href="https://manipulator-40561.web.app/privacy.html">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .legal {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+    .legal h1 {
+      font-size: clamp(34px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+    }
+    .legal .lastmod {
+      color: var(--ink-3);
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+    .legal h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 40px 0 12px;
+    }
+    .legal h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 24px 0 8px;
+    }
+    .legal p, .legal ul {
+      color: var(--ink-2);
+      font-size: 16px;
+      line-height: 1.65;
+      margin: 0 0 12px;
+    }
+    .legal ul { padding-left: 22px; }
+    .legal li { margin-bottom: 6px; }
+    .legal strong { color: var(--ink); }
+    .legal code {
+      background: rgba(220, 78, 54, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--coral-dark);
+    }
+    .legal a { color: var(--coral); text-decoration: underline; text-underline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <nav class="nav__inner" aria-label="Primary">
+      <a href="./" class="nav__brand">
+        <img src="icon.png" alt="Manipulator" width="32" height="32">
+        <span>Manipulator</span>
+      </a>
+      <a href="./#install" class="btn btn--primary btn--small">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill-rule="evenodd" d="M16 8a8.001 8.001 0 0 1-7.022 7.94l1.902-7.098a2.995 2.995 0 0 0 .05-1.492A2.977 2.977 0 0 0 10.237 6h5.511A8 8 0 0 1 16 8M0 8a8 8 0 0 0 7.927 8l1.426-5.321a2.978 2.978 0 0 1-.723.255 2.979 2.979 0 0 1-1.743-.187A2.986 2.986 0 0 1 5.27 9.4L2.487 4.582A7.987 7.987 0 0 0 0 8m5.5 0a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0M8 0a7.998 7.998 0 0 1 6.929 4H8a3.003 3.003 0 0 0-2.96 2.5h-.04l-.045-.083L2.387 1.84A7.978 7.978 0 0 1 8 0"/>
+        </svg>
+        Add to Chrome
+      </a>
+    </nav>
+  </header>
+
+  <main class="legal">
+
+    <h1>Privacy Policy</h1>
+    <p class="lastmod">Last updated: 16 May 2026</p>
+
+    <p>
+      Manipulator is a Chrome extension that scores tweets on x.com / twitter.com
+      for engagement-bait patterns. The extension runs entirely in your browser.
+      <strong>No data leaves your device</strong> apart from network requests
+      that x.com itself would already make, plus a one-time ML-model download.
+    </p>
+
+    <h2>What stays local (never sent anywhere)</h2>
+
+    <h3>In <code>chrome.storage.local</code></h3>
+    <ul>
+      <li>
+        <strong>Per-handle scoring history</strong> — running count and average
+        score for each X handle you've scrolled past. Built up purely from
+        on-device computation. Used to recognize accounts that have posted many
+        manipulative tweets and adjust future scores accordingly.
+      </li>
+      <li>
+        <strong>"About this account" cache (7-day expiry)</strong> — the
+        public profile data X shows on the <code>/about</code> sub-page:
+        country, date joined, verification, posting client. Cached per handle
+        so that profile data doesn't need to be re-fetched on every page reload.
+      </li>
+    </ul>
+
+    <h3>In <code>sessionStorage</code></h3>
+    <ul>
+      <li>
+        A rate-limit backoff timestamp, so the extension doesn't repeatedly
+        hammer X's API if it returns a 429 response.
+      </li>
+    </ul>
+
+    <h3>In browser IndexedDB (managed by Hugging Face Transformers.js)</h3>
+    <ul>
+      <li>
+        The on-device ML model weights (~70 MB) — downloaded once on first
+        use, cached afterward.
+      </li>
+    </ul>
+
+    <h2>What is NEVER collected or transmitted</h2>
+    <ul>
+      <li>Tweet text content</li>
+      <li>Tweet authors' handles or display names</li>
+      <li>Profile data (country, dates, verification status, posting client)</li>
+      <li>Tweet URLs or IDs</li>
+      <li>Your own X account, email, name, IP address, or any personally identifiable information</li>
+      <li>Your scoring history or which tweets you have viewed</li>
+    </ul>
+    <p>
+      These categories are read in your browser solely to compute the score
+      badge, then discarded. They are not transmitted to any remote service.
+    </p>
+
+    <h2>Network requests Manipulator makes</h2>
+    <p>The extension only contacts the following hosts:</p>
+    <ul>
+      <li>
+        <strong>x.com / twitter.com</strong> — same-origin GraphQL request to
+        the <code>AboutAccountQuery</code> endpoint to fetch the public "About
+        this account" profile for tweet authors. Uses your existing X session
+        cookies, identical to what x.com itself does when you open a profile
+        page. No data is sent <em>about</em> you to X beyond your normal
+        browsing session.
+      </li>
+      <li>
+        <strong>huggingface.co, *.huggingface.co, cdn-lfs.huggingface.co</strong>
+        — used <em>once per install</em> to download the ML model weights and
+        tokenizer (data files only — no executable code). Cached in your
+        browser's IndexedDB thereafter.
+      </li>
+    </ul>
+    <p>
+      <strong>The extension makes no other network requests.</strong>
+      There is no developer-controlled server, no analytics endpoint, no
+      telemetry, no advertising or tracking pixels, and no third-party SDK.
+    </p>
+
+    <h2>No analytics, no tracking</h2>
+    <p>
+      Manipulator does not include any analytics or telemetry. There is no
+      opt-in tier that enables data collection. The developer has no way to
+      learn anything about your use of the extension — including how often
+      you use it, what tweets you see, or whether you have it installed.
+    </p>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li>
+        <strong><code>storage</code></strong> — to persist the local scoring
+        history and About-data cache described above.
+      </li>
+      <li>
+        <strong><code>offscreen</code></strong> — to host a hidden HTML
+        document where the on-device ML model runs. Required because Manifest V3
+        service workers cannot run the inference library.
+      </li>
+      <li>
+        <strong>Host permissions on x.com, twitter.com</strong> — to inject the
+        score badge into the timeline and to call X's "About this account" API
+        using your existing session.
+      </li>
+      <li>
+        <strong>Host permissions on huggingface.co (and subdomains)</strong> —
+        to download the ML model weights on first install.
+      </li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>
+      Manipulator is not directed at children under 13 and does not knowingly
+      collect any data from them. (In fact, it doesn't knowingly collect data
+      from anyone.)
+    </p>
+
+    <h2>Open source</h2>
+    <p>
+      You can audit every claim in this policy by reading the extension's
+      source code. The codebase is small enough to inspect in an afternoon —
+      every <code>fetch</code>, every <code>chrome.storage</code> call, every
+      DOM access is in the open.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version replaces this page and is
+      bundled in the next extension release. Material changes (e.g. adding any
+      new network destination) would be called out in the extension's
+      Chrome Web Store listing change notes.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      For questions, open an issue on the extension's source repository, or
+      contact the developer via the email address listed on the Chrome Web
+      Store listing.
+    </p>
+
+  </main>
+
+</body>
+</html>
