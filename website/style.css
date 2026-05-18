@@ -317,7 +317,6 @@ img.screenshot { object-fit: contain; }
 .step .screenshot img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   object-position: top center;
 }
 .ai .screenshot { max-width: 480px; }
@@ -338,7 +337,6 @@ img.screenshot { object-fit: contain; }
 .screenshot--step img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   object-position: top center;
 }
 .screenshot--showcase {
