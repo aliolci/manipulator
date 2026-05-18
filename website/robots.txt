@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aliolci.github.io/manipulator/sitemap.xml
+Sitemap: https://manipulator-40561.web.app/sitemap.xml
