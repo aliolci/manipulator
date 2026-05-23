@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://manipulator-40561.web.app/sitemap.xml
+Sitemap: https://manipulator.cc/sitemap.xml
