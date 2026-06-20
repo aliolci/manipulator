@@ -61,6 +61,7 @@
         "featureList": [
           "Real-time manipulation scores on X timeline",
           "On-device zero-shot AI classification",
+          "Configurable score threshold to hide unwanted tweets",
           "No analytics or telemetry",
           "Hover tooltip with signal breakdown"
         ],
@@ -254,6 +255,34 @@
 
       <div class="screenshot screenshot--showcase">
         <img src="screenshots/showcase.png" alt="High-scoring tweet with Manipulator tooltip expanded" width="1760" height="560" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Hide filter ───────────────────────────────────────────────── -->
+  <section class="hide-filter" id="hide" aria-labelledby="hide-heading">
+    <div class="container hide-filter__inner">
+      <span class="eyebrow">
+        <span class="dot"></span> Your feed, your rules
+      </span>
+      <h2 id="hide-heading">Set a score. Hide the rest.</h2>
+      <p class="section-lead">
+        Choose a cutoff in the popup — tweets above it are covered until you hover.
+      </p>
+
+      <div class="hide-filter__shots">
+        <figure class="hide-filter__shot">
+          <div class="screenshot">
+            <img src="screenshots/hide-slider.png" alt="Hide threshold slider in the Manipulator popup" width="687" height="347" loading="lazy" decoding="async">
+          </div>
+          <figcaption>Pick your threshold</figcaption>
+        </figure>
+        <figure class="hide-filter__shot">
+          <div class="screenshot">
+            <img src="screenshots/hide-tweet.png" alt="High-scoring tweet covered with score badge" width="708" height="347" loading="lazy" decoding="async">
+          </div>
+          <figcaption>High scores get covered</figcaption>
+        </figure>
       </div>
     </div>
   </section>

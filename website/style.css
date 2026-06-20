@@ -522,6 +522,43 @@ section h2 {
   margin-right: auto;
 }
 
+/* ─── Hide filter ──────────────────────────────────────────────────── */
+.hide-filter {
+  padding: 80px 24px;
+  text-align: center;
+  background: var(--cream);
+}
+.hide-filter__inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.hide-filter .eyebrow {
+  margin-bottom: 16px;
+}
+.hide-filter .section-lead {
+  max-width: 420px;
+  margin: 16px auto 0;
+}
+.hide-filter__shots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.hide-filter__shot {
+  margin: 0;
+}
+.hide-filter__shot .screenshot {
+  box-shadow: var(--shadow-lg);
+}
+.hide-filter__shot figcaption {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+}
+
 /* ─── Privacy ──────────────────────────────────────────────────────── */
 .privacy {
   padding: 100px 24px;
@@ -610,6 +647,7 @@ section h2 {
   .step--reverse { grid-template-columns: 60px 1fr; }
   .step .screenshot { grid-column: 1 / -1; }
   .ai__grid { grid-template-columns: 1fr; gap: 48px; }
+  .hide-filter__shots { grid-template-columns: 1fr; max-width: 320px; margin-left: auto; margin-right: auto; }
   .step__number { font-size: 42px; }
   section h2, .cta h2 { font-size: 30px; }
   .footer .container { flex-direction: column; text-align: center; }

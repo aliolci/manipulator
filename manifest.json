@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Manipulator",
-  "version": "0.1.297",
+  "version": "0.2.101",
   "description": "Scores every tweet 0–10 for manipulation patterns. Catch clickbait, clip farms, and bait accounts at a glance.",
   "permissions": ["storage", "offscreen"],
   "host_permissions": [
@@ -14,6 +14,14 @@
   "background": {
     "service_worker": "background/service-worker.js",
     "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+    },
+    "default_title": "Manipulator"
   },
   "content_scripts": [
     {
@@ -31,6 +39,7 @@
         "content/reputation.js",
         "content/tweet-extractor.js",
         "content/score.js",
+        "content/hide-filter.js",
         "content/content.js"
       ],
       "css": ["content/badge.css"],

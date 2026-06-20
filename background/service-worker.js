@@ -14,7 +14,27 @@ async function ensureOffscreen() {
   creating = null;
 }
 
+function setHiddenBadge(tabId, count) {
+  const text = count > 0 ? String(count) : '';
+  chrome.action.setBadgeText({ tabId, text });
+  if (count > 0) {
+    chrome.action.setBadgeBackgroundColor({ tabId, color: '#c62828' });
+  }
+}
+
+chrome.tabs.onActivated.addListener(({ tabId }) => {
+  chrome.tabs.sendMessage(tabId, { type: 'REQUEST_HIDDEN_COUNT' }).catch(() => {
+    setHiddenBadge(tabId, 0);
+  });
+});
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg?.type === 'HIDDEN_COUNT') {
+    const tabId = sender.tab?.id;
+    if (tabId != null) setHiddenBadge(tabId, msg.count || 0);
+    return false;
+  }
+
   if (msg?.type !== 'CLASSIFY_TWEET') return false;
 
   (async () => {

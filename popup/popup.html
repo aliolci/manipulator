@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manipulator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="popup-header">
+    <img src="../icons/icon-48.png" alt="" width="28" height="28">
+    <span>Manipulator</span>
+  </header>
+
+  <label class="toggle-row">
+    <input type="checkbox" id="hide-enabled">
+    <span>Hide high-scoring tweets</span>
+  </label>
+
+  <div class="slider-panel" id="slider-panel">
+    <div class="slider-labels">
+      <span class="mini-badge mini-badge--show">show</span>
+      <span class="slider-value" id="threshold-value">7.5</span>
+      <span class="mini-badge mini-badge--hide">hide</span>
+    </div>
+    <input
+      type="range"
+      id="hide-threshold"
+      min="1"
+      max="10"
+      step="0.1"
+      value="7.5"
+      aria-label="Hide tweets scored above this value"
+    >
+    <p class="slider-hint">Tweets scored above this value are covered until you hover.</p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

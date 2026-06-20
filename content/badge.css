@@ -74,3 +74,67 @@
 .manipulator-tooltip-section-title {
   font-weight: 500;
 }
+
+/* ─── Hide filter overlay ─────────────────────────────────────────────── */
+.manipulator-content-region {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stable hover target — stays interactive while the visual overlay fades. */
+.manipulator-hide-zone {
+  position: absolute;
+  z-index: 5;
+  cursor: default;
+}
+
+.manipulator-hide-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+/* Reveal hidden body while hovering the cover zone or the inline score badge (tooltip). */
+.manipulator-hide-zone:hover .manipulator-hide-overlay,
+[data-manipulator-score]:has(.manipulator-badge:hover) .manipulator-hide-overlay {
+  opacity: 0;
+}
+
+.manipulator-hide-overlay__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.manipulator-hide-overlay__badge[data-level="low"] {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.manipulator-hide-overlay__badge[data-level="medium"] {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.manipulator-hide-overlay__badge[data-level="high"] {
+  background: #ffebee;
+  color: #c62828;
+}
+
+@media (prefers-color-scheme: dark) {
+  .manipulator-hide-overlay {
+    background: #000000;
+  }
+}

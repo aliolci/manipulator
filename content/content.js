@@ -327,6 +327,13 @@
     badge.setAttribute('aria-label', `Attention pressure score: ${formatScore1(score)} out of 10`);
     badge.textContent = badgeLabel(score, country?.flag);
     setTooltip(badge, score, breakdown, contributions, income, aboutInfo, handle, reputation);
+
+    const articleEl = badge.closest('article[data-testid="tweet"]')
+      || badge.closest('[data-testid="tweet"]')
+      || badge.closest('[data-testid="cellInnerDiv"]');
+    if (articleEl && window._manipulator_applyHideFilter) {
+      window._manipulator_applyHideFilter(articleEl, score);
+    }
   }
 
   // ── For You detection ────────────────────────────────────────────────────
@@ -385,9 +392,13 @@
       const tweetData = extractTweet(articleEl);
       if (!tweetData) return;
 
-      // Already badged this DOM element? Nothing to do.
+      // Already badged this DOM element — refresh hide filter if we have a score.
       if (articleEl.querySelector('.manipulator-badge')) {
         seenIds.add(tweetData.id);
+        const cached = scoreCache.get(tweetData.id);
+        if (cached && window._manipulator_applyHideFilter) {
+          window._manipulator_applyHideFilter(articleEl, cached.score);
+        }
         return;
       }
 
@@ -543,6 +554,18 @@
 
   function init() {
     isForYou = detectForYou();
+    window._manipulator_collectTweetRoots = collectTweetRoots;
+    if (window._manipulator_initHideFilter) {
+      window._manipulator_initHideFilter((root) => {
+        try {
+          const data = extractTweet(root);
+          if (!data || !scoreCache.has(data.id)) return null;
+          return scoreCache.get(data.id).score;
+        } catch (_) {
+          return null;
+        }
+      });
+    }
     startObserver();
     watchTabChanges();
   }
