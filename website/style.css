@@ -103,6 +103,55 @@ p { margin: 0; }
 }
 .btn--large { padding: 16px 32px; font-size: 17px; }
 
+/* ─── Nav actions group ────────────────────────────────────────────── */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+.nav__actions a { text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+
+/* Donate button — copied verbatim from mountio.app (.donate-link) */
+.donate-link {
+  display: inline-flex;
+  align-items: center;
+  background: #ff3b30;
+  color: #fff !important;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+.donate-link:hover,
+.donate-link:focus { background: #e0281f; color: #fff !important; }
+
+/* OddlyApps parent-site stamp — copied verbatim from mountio.app (.oddlyapps-logo) */
+.oddlyapps-logo {
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #111111;
+  color: #f5f0e6 !important;
+  padding: 8px 14px;
+  border: 3px solid #111111;
+  border-radius: 0;
+  transform: rotate(-1deg);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.oddlyapps-logo:hover,
+.oddlyapps-logo:focus { background: #111111; color: #ffd23f !important; }
+.oddlyapps-logo sup { font-size: 8px; line-height: 0; }
+
 /* ─── Accessibility / SEO helpers ──────────────────────────────────── */
 .skip-link {
   position: absolute;
@@ -147,6 +196,8 @@ p { margin: 0; }
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 10px 16px;
 }
 .nav__brand,
 .footer__brand {
@@ -640,6 +691,10 @@ section h2 {
 
 /* ─── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 880px) {
+  .nav { padding: 12px 16px; }
+  .nav__actions { gap: 8px; }
+  .donate-link { padding: 7px 13px; font-size: 14px; }
+  .oddlyapps-logo { padding: 7px 11px; font-size: 14px; }
   .hero { padding: 56px 20px 72px; }
   .hero__inner { grid-template-columns: 1fr; gap: 48px; }
   .pillars .container { grid-template-columns: 1fr; }
